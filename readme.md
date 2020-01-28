@@ -16,10 +16,11 @@ So you must consider this at begging of your python and Django.
 
 This is also my first Django app so I also follow the tutorial of Django site.
 
-## 1. For installing django steps (on vs code you use Terminal which you start by ctrl+`)
+## 1. For installing django steps (on vs code you use Terminal which you start by `ctrl+``)
 
     a. Create one directory mkdir newdirecroty
-    b. Move on to that directory by your cmd and by cd newdirectory
+    b. Move on to that directory by your cmd and by 
+    `cd newdirectory`
     c. Run django install - pip install Django
     d. Create your project by - django-admin startproject projectname
     e. Go into the cd projectname folder
