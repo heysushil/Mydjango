@@ -24,7 +24,7 @@ b. Move on to that directory by your cmd and by `cd newdirectory`
 
 c. Run `django install - pip` install Django
 
-d. Create your project by - `django-admin startproject projectname` . After this the admin created with the file sturcte 
+d. Create your project by - `django-admin startproject projectname` . After this the admin created with the file sturcte
 
     mysite/
         manage.py
@@ -147,10 +147,22 @@ Go to this site [mysqlclient](https://www.lfd.uci.edu/~gohlke/pythonlibs/#mysqlc
         4. After these change run server cmd to check is every thins runs and you will see the output on browse or not. cmd - `python manage.py runserver`
 
                 Go to http://localhost:8000/polls/ in your browser, and you should see the text “Hello, world. You’re at the polls index.”, which you defined in the index view.
-4) In app have model.py file which is actually a file which handel all database work here same like mvc's model
-3) Great part is model.py auto create db table by the name of class which creates in model
-4) Also in class all form fields which I define is db tables column fields also that's why at the time of defineing the variable here with datatype and length
-5) After creating your class need also need to add /include your app in root->setting.py on
+    2. models.py file for handeling database which we better understand at belows definintions.
+    3. apps.py file is which use for app also be more know about it at below
+    4. admin.py is use to made connection with admin panel and front end panel. We more know about this at below to.
+
+            Note: There is many ohter changes alos which we know in upcoming lines step by step.
+5) In app have model.py file which is actually a file which handel all database work here same like mvc's model
+6) Great part is model.py auto create db table by the name of class which creates in model
+
+## models.py page to change on it
+
+1) On models.py file added new models or classes `Question` and `Choice` which is aleray on project. But at firest added these on it.
+
+        Note: model is made codeing easy because its models name like Question will also became database table name and the fields on the models also became the tables column. Which is realy great part.
+        And that's how pyhone and Django became so easy
+2) Also in class all form fields which I define is db tables column fields also that's why at the time of defineing the variable here with datatype and length
+3) After creating your class need also need to add /include your app in `root->setting.py` on
 
     `INSTALLED_APPS = [
         'polls.apps.PollsConfig',
@@ -162,15 +174,90 @@ Go to this site [mysqlclient](https://www.lfd.uci.edu/~gohlke/pythonlibs/#mysqlc
         'django.contrib.staticfiles',
     ]`
 My app which add here where the polls is my app folder name Apps is file in this folder with name of apps.py PollsConfig is in app folder have apps.py folder in which have this class
-6) After all this run this
+
+        Note: After adding the app here Djano know now about the app and use it with admin also.
+4) After all this run this
 
     `python manage.py makemigrations polls`
 
     Pasted from <https://docs.djangoproject.com/en/3.0/intro/tutorial02/>
+    For more information about after this setpes are present here <https://docs.djangoproject.com/en/3.0/intro/tutorial02/>
+5) When you run upper cmd if everyting going right then you will the this on your termianl
+    `Migrations for 'polls':
+    polls/migrations/0001_initial.py:
+        - Create model Choice
+        - Create model Question
+        - Add field question to choice`
+6) Last cmd to made magic happence `python manage.py sqlmigrate polls 0001`. When you run this on terminal you will see the output where have noraml mysql querys which done the rest work on behalf of you.
+7) Still you didn't see the new tables on your database because sitll on last cmd is pending which is `python manage.py migrate` This cmd alwas mad last changes on db.
 
-7) For more information about after this setpes are present here <https://docs.djangoproject.com/en/3.0/intro/tutorial02/>
+        Note: If check your database which have many tables on it but polls/models.py class not became table yet because we don't makemigrations yet but after running the avove cmd models.py all class became tabe on database and also in class fields became column on table. After this command.
 
-# Steps to change existing git user on vs code by these steps
+## Basic of mysql query on pyhon way
+
+1. At first we do that on shell so for this run this cmd to change youer terminals default cmd to shell of pyhon for running these cmd - `pyhon manage.py shell`
+2. After you successfully enterd on shell then try to run these commands line by line on your shell to become familier with these quese which we run on code. But first try these here.
+
+        >>> from polls.models import Choice, Question  # Import the model classes we just wrote.
+
+        # No questions are in the system yet.
+        >>> Question.objects.all()
+        <QuerySet []>
+
+        # Create a new Question.
+        # Support for time zones is enabled in the default settings file, so
+        # Django expects a datetime with tzinfo for pub_date. Use timezone.now()
+        # instead of datetime.datetime.now() and it will do the right thing.
+        >>> from django.utils import timezone
+        >>> q = Question(question_text="What's new?", pub_date=timezone.now())
+
+        # Save the object into the database. You have to call save() explicitly.
+        >>> q.save()
+
+        # Now it has an ID.
+        >>> q.id
+        1
+
+        # Access model field values via Python attributes.
+        >>> q.question_text
+        "What's new?"
+        >>> q.pub_date
+        datetime.datetime(2012, 2, 26, 13, 0, 0, 775217, tzinfo=<UTC>)
+
+        # Change values by changing the attributes, then calling save().
+        >>> q.question_text = "What's up?"
+        >>> q.save()
+
+        # objects.all() displays all the questions in the database.
+        >>> Question.objects.all()
+        <QuerySet [<Question: Question object (1)>]>`
+3. At last commend `objects.all()` not feching all on privew way so for that change on `polls/models.py` and add def
+        `polls/models.py¶
+        from django.db import models
+
+        class Question(models.Model):
+            # ...
+            def __str__(self):
+                return self.question_text
+
+        class Choice(models.Model):
+            # ...
+            def __str__(self):
+                return self.choice_text`
+4. After that also addind few more custome methods on `polls/models.py` file.
+
+        Note: Like you know that python have librarys for everythins so same that doind here for everythind we need librarys which we can import.
+        In this cas I need timezone for that i add this line on models.py file
+
+        from django.utils import timezone
+5. Same like shell command on `Djangos` home website also have many sehll cmd which we can not needs yet so I'm left that and mover forward.
+
+## Creat User for Admin Access
+
+1. At first if you try to hit the `ip address/admin/` you get the login panel but for that you must have login credential which you don't get from any where. You need to create one.
+2. ss
+
+## Steps to change existing git user on vs code by these steps
 
 1. In case of your if you want to change your remote access from one user to another so it's go by changing on you vs code the git global user name and email by running this cmd -> git config --global user.name "yourname" and same for email
 2. After that chack how many remote you added previously on your localsystem of the project by
