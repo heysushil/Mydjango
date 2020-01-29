@@ -1,4 +1,6 @@
-# Django Demo Project to understand better at eas
+# Django Polls App Example with code and Discription
+
+## [Django Intro Documnet Refrence form here](https://docs.djangoproject.com/en/3.0/intro/)
 
 Hello welcome to this project. It's for beginer because I'm also the beginer when I started this
 But I just started the prectice this way so it not just hepl me but also others to.
@@ -255,7 +257,159 @@ My app which add here where the polls is my app folder name Apps is file in this
 ## Creat User for Admin Access
 
 1. At first if you try to hit the `ip address/admin/` you get the login panel but for that you must have login credential which you don't get from any where. You need to create one.
-2. ss
+2. for geting the admin panel on your project you need to creat admin user for this follow these cmd
+`python manage.py createsuperuser`
+Enter your desired username and press enter.
+
+    Username: admin
+You will then be prompted for your desired email address:
+
+    Email address: admin@example.com
+The final step is to enter your password. You will be asked to enter your password twice, the second time as a confirmation of the first.
+
+        Password: **********
+        Password (again): *********
+        Superuser created successfully.
+3. Start the development server
+
+    First need to start server by cmd - `python manage.py runserver`
+
+    Now, open a Web browser and go to “/admin/” on your local domain – e.g., <http://127.0.0.1:8000/admin/.> You should see the admin’s login screen:
+
+        Note: As per above app creating there was 2 methods on models.py which is Question and Choice and here you will see the Question where you can already have functionality of add/edit/update/delete facility
+
+        Note: Rest changes will on goin into project files which you download or clore form here.
+
+4. For provideing access to admin panel about the poll app then in polls/admin.py need to import admin and Question method by this
+
+        polls/admin.py
+
+        from django.contrib import admin
+
+        from .models import Question
+
+        admin.site.register(Question)
+
+## Start Polls app
+
+[Django Poll App More Details](https://docs.djangoproject.com/en/3.0/intro/tutorial03/)
+
+1. When I'm getting to add 3 def on views.py
+    1. `detail/results/vote` then must add them on
+    2. `polls/urls.py` for link it to the routing which is Djangos main part and always follow this.
+    3. For adding these def on `polls/urls.py` import
+        1. `django.urls path` and
+        2. `from . import views`
+        3. Then on `urlpatterns` add these 3 paths with url behaviour like
+            1. Example For single poll - `http://IP_Address/polls/question_id/` or for single question `http://IP_Address/polls/question_id/results/` like that.
+2. In views.py of accessing `HttpResponse` need to import
+    1. `from django.http import HttpResponse`
+    2. For models.py `Question` also import the model here `from django.http import HttpResponse`
+    3. Because like the normal function which request for somthins and when fucntion get that then must response for this in the form of `return`. So the same pictures goes here.
+    4. For more details look at this
+
+            polls/views.py¶
+            from django.http import HttpResponse
+
+            from .models import Question
+
+            def index(request):
+                latest_question_list = Question.objects.order_by('-pub_date')[:5]
+                output = ', '.join([q.question_text for q in latest_question_list])
+                return HttpResponse(output)
+
+            # Leave the rest of the views (detail, results, vote) unchanged
+
+3. On views.py page all code is hard coded for know but we need HTML to represent this. And at first we don't get that.
+    1. In `Django` html codes are holdes in `templates` folder and for theat created one in `polls/templates`
+    2. After that must inform the `Django` framwork about this folder which form for html templates by following way.
+        1. `Polls` is app but main core power is holds by the `root folders files`. So confirm that we need to inform about templates to the `root`.
+        2. But first if we have `Polls App` then for this app realated all html files will stroe in `polls/templates/polls/index.html` like way. It's import to create `polls` folder in `templates`
+        3. After creating `index.html` in `polls/templates/polls/` then `import` this in views.py file by `from django.template import loader`.
+        4. Know views.py def index lookes like
+
+                def index(request):
+                    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+                    template = loader.get_template('polls/index.html')
+                    context = {
+                        'latest_question_list': latest_question_list,
+                    }
+                    return HttpResponse(template.render(context, request))
+
+    3. `Django` have sortcut of `HttpResponse` is `render` which works the same so now change the views.py like this by importing `from django.shortcuts import render`
+
+            from django.shortcuts import render
+
+            from .models import Question
+
+
+            def index(request):
+                latest_question_list = Question.objects.order_by('-pub_date')[:5]
+                context = {'latest_question_list': latest_question_list}
+                return render(request, 'polls/index.html', context)
+
+            Note that once we’ve done this in all these views, we no longer need to import loader and HttpResponse (you’ll want to keep HttpResponse if you still have the stub methods for detail, results, and vote).
+
+            The render() function takes the request object as its first argument, a template name as its second argument and a dictionary as its optional third argument. It returns an HttpResponse object of the given template rendered with the given context.
+
+4. Raising a 404 error in views.py
+
+        Note: We now very well all the import alwas goes through conterller and in `Django's` case controller is views.py
+
+    1. We know than if not found the url then show error page and this is for this.
+    2. Import `from django.http import Http404` after that views.py `detail model` looks like
+
+            from django.http import Http404
+            from django.shortcuts import render
+
+            from .models import Question
+            # ...
+            def detail(request, question_id):
+                try:
+                    question = Question.objects.get(pk=question_id)
+                except Question.DoesNotExist:
+                    raise Http404("Question does not exist")
+                return render(request, 'polls/detail.html', {'question': question})
+
+    3. Sortcute of `Http404` is `get_object_or_404` after replacing this the views.py code
+
+            from django.shortcuts import get_object_or_404, render
+
+            from .models import Question
+            # ...
+            def detail(request, question_id):
+                question = get_object_or_404(Question, pk=question_id)
+                return render(request, 'polls/detail.html', {'question': question})
+            
+            Note: The get_object_or_404() function takes a Django model as its first argument and an arbitrary number of keyword arguments, which it passes to the get() function of the model’s manager. It raises Http404 if the object doesn’t exist.
+
+    4. Then created detail.html file where you look the pyhon and html syntex are at first looks confuging but after that it's easy for you.
+5. Namspace for deffernciate `Django's` multiple `apps` same `models`
+    1. The tutorial project has just one app, polls. In real Django projects, there might be five, ten, twenty apps or more. How does Django differentiate the URL names between them? For example, the polls app has a detail view, and so might an app on the same project that is for a blog. How does one make it so that Django knows which app view to create for a url when using the {% url %} template tag?
+    2. The answer is to add namespaces to your URLconf. In the polls/urls.py file, go ahead and add an app_name to set the application namespace:
+    3. For this on polls folders urls.py file add the name of app like this
+
+                polls/urls.py
+
+                from django.urls import path
+
+                from . import views
+
+                app_name = 'polls'
+                urlpatterns = [
+                    path('', views.index, name='index'),
+                    path('<int:question_id>/', views.detail, name='detail'),
+                    path('<int:question_id>/results/', views.results, name='results'),
+                    path('<int:question_id>/vote/', views.vote, name='vote'),
+                ]
+
+6. At last modifyed the index.html because when we define the app name on `polls/urls.py` it make templates easy to connect with views.py models. for that need to change the way of calling url on html file like this in `index.html` page
+
+        <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+
+## Writing your first Django app, part 4 as per Django website
+
+
 
 ## Steps to change existing git user on vs code by these steps
 
