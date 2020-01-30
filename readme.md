@@ -409,7 +409,25 @@ The final step is to enter your password. You will be asked to enter your passwo
 
 ## Writing your first Django app, part 4 as per Django website
 
+1. Use generic views: Less code is better in this part shows the minimization of code on views.py file.
+2. Changed the def with classes on views.py file.
+3. CHanges are following
+    1. In views.py file def was defauls but now created class with class name with have `template name` which we use for that class also `model name` which we use to get the data.
+    2. After defining class in views.py file then in `polls/urls.py` file change the `urlpatterns` of each.
+    3. And the `templates` file are same as pre. but you once look at those file.
+    4. Know it makes real seens from here becasue we are more habuchual with class which know part of views.py
+    5. Also in views.py file in class pass a `argument` which for import a `generic` library also in class pass 2 type of arguments
+        1. `ListView` = Abstruct the concept of `display a list of objects`
+        2. `DetailView` = Abstruct the concept of `display a detail page for particular type of object`. DetailView want's a primary key to show the single object. For that pass a `pk` in `polls/urls.py` file in urlpatterns
+        3. Each of them use `generic` before them which is use for know about model. Means each `generic` view which model using by this acting upon that model
+        4. For more understanding about this concept learn [Django Tutorail 4](https://docs.djangoproject.com/en/3.0/intro/tutorial04/)
 
+## Django Part 5 - About Test case in polls/tests.py
+
+1. Test cases are use similer like's validation but it work some extra graet way. Because test cases stop the `loop hols of functionality`.
+2. For that right a individual `def test cases` in tests.py file which helps to check the functionality at once of full app by running this cmd - `python manage.py test polls` which show the test case in terminal with problem and line in which the problem arries.
+3. Test case also reduce the problem of test it work to handel full apps testing at once.
+4. For info abotu test case look at this [Django Tutorail 5](https://docs.djangoproject.com/en/3.0/intro/tutorial05/)
 
 ## Steps to change existing git user on vs code by these steps
 
