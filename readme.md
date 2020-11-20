@@ -1,7 +1,7 @@
 # Django Demo Project to understand better at eas
 
 ## Hey if you want to complete your project and need help to complete it. Contact at given email id.
-## Contact For College Project / Project Report / Documentation / Project Training @ heykyakaru@gmail.com
+## Contact For College Project / Project Report / Documentation / Project Training @ heysushil@technokrits.com
 
 ## YouTube Videos and related Playlist Details which helps to better understand the code on heyKyaKaru channel
 
