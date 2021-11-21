@@ -306,7 +306,7 @@ My app which add here where the polls is my app folder name Apps is file in this
 
 1. [Twitter](http://twitter.com/heysushil)
 1. [LinkedIn](https://www.linkedin.com/in/heysushil/)
-1. [Facebook](https://www.facebook.com/heysusheel)
+1. [Instagram](https://www.instagram.com/iheysushil)
 1. [Facebook Page](https://www.facebook.com/iheysushil/)
 
 ### Other works and platforms:
